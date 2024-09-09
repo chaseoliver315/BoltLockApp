@@ -1,12 +1,13 @@
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tkinter as tk
+
 class NetworkMonitorApp(tk.Tk):
     def __init__(self, monitor):
         super().__init__()
         self.monitor = monitor
         self.title("Network Monitor")
-        self.geometry("600x400")
+        self.geometry("1000x1000")
         
         self.label_sent = tk.Label(self, text="Data Sent: 0 bytes")
         self.label_sent.pack(pady=10)
