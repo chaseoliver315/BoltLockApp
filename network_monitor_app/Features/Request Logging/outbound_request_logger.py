@@ -1,17 +1,24 @@
-from scapy.all import sniff, IP, TCP, UDP
+from scapy.all import sniff, IP, ICMP, TCP, UDP
 from datetime import datetime, timedelta
 import logging
+import psutil
 import socket
 import os
 import sys
 import subprocess
 
-
-# TODO - Find the active network interface and automatically use that to sniff traffic.
-# TODO - Maybe reverse DNS Lookup to resolve DNS names.
+# TODO - Build a ICMP Echo Request Detector / Blocker
 # TODO - Flag potentially problematic packets - large sizes
 
-
+protocol_mapping = {
+    1: 'ICMP',
+    6: 'TCP',
+    17: 'UDP',
+    47: 'GRE',
+    50: 'ESP',
+    58: 'ICMPv6',
+    89: 'OSPF'
+}
 
 def check_and_elevate():
     if os.geteuid() != 0:
@@ -35,7 +42,7 @@ recent_requests = {}
 # Time window to filter duplicate requests (in seconds)
 time_window = 5
 
-def get_local_ip():
+def get_local_ip(interface):
     """
     Finds and returns the local IP address of the machine.
     """
@@ -53,13 +60,58 @@ def get_local_ip():
     
     return local_ip
 
-my_ip = get_local_ip()
+
+def get_active_interface():
+    interfaces = psutil.net_if_stats()  # Get all network interfaces with their stats
+    addrs = psutil.net_if_addrs()  # Get network addresses associated with interfaces
+    
+    for interface, stats in interfaces.items():
+        if stats.isup and interface in addrs:  # Check if the interface is up and has an address
+            for addr in addrs[interface]:
+                if addr.family == socket.AF_INET:  # Filter for IPv4 addresses
+                    return interface  # Return the first active interface found
+    return None
+
+
+# Get the active network interface and its IP
+active_interface = get_active_interface()
+
+my_ip = get_local_ip(active_interface)
+
+
 
 def resolve_dns(ip_address):
     try:
         return socket.gethostbyaddr(ip_address)[0]  # Returns the DNS name
     except socket.herror:
         return None 
+
+
+def analyze_packet_type(packet):
+    if IP in packet:
+        # Check if the packet is ICMP
+        if ICMP in packet:
+            icmp_type = packet[ICMP].type
+            icmp_code = packet[ICMP].code
+            return f"Type: {icmp_type}, Code: {icmp_code}"
+
+        # Check if the packet is TCP
+        elif TCP in packet:
+            tcp_flags = packet[TCP].flags
+            src_port = packet[TCP].sport
+            dst_port = packet[TCP].dport
+            return f"Source Port: {src_port}, Destination Port: {dst_port}, Flags: {tcp_flags}"
+
+        # Check if the packet is UDP
+        elif UDP in packet:
+            src_port = packet[UDP].sport
+            dst_port = packet[UDP].dport
+            return f"Source Port: {src_port}, Destination Port: {dst_port}"
+
+        # For unknown protocol types
+        else:
+            return "Unknown Packet Type"
+
 
 # Function to process and log outgoing packets
 def process_packet(packet):
@@ -68,11 +120,15 @@ def process_packet(packet):
         dst_ip = packet[IP].dst
         protocol = packet.proto
         packet_size = len(packet)
+        protocol_number = packet.proto
+        protocol_name = protocol_mapping.get(protocol_number, f"Unknown ({protocol_number})") 
         timestamp = datetime.now()
         dns_name = resolve_dns(dst_ip)
         
         # Create a unique key for the packet (based on src, dst, and protocol)
         packet_key = (src_ip, dst_ip, protocol)
+
+        packet_type_details = analyze_packet_type(packet)
 
         # Check if the packet has been seen recently
         if packet_key in recent_requests:
@@ -84,9 +140,10 @@ def process_packet(packet):
         # Organize and structure the log message
         log_message = (
             f"Outbound Request - "
-            f"Destination IP: {dst_ip}, "
-             f"DNS: {dns_name if dns_name else 'N/A'}, "
-            f"Protocol: {protocol}, "
+            f"Destination IP: {dst_ip} "
+             f"DNS: {dns_name if dns_name else 'N/A'} "
+            f"Protocol: {protocol_name} "
+            f"{packet_type_details} "
             f"Packet Size: {packet_size} bytes"
         )
 
@@ -98,9 +155,9 @@ def process_packet(packet):
         recent_requests[packet_key] = timestamp
 
 # Start sniffing outgoing traffic
-def start_sniffing(interface='en0'):
+def start_sniffing(interface):
     print(f"Starting to sniff on interface {interface}...")
-    
+    print(f"Removing duplicates that appear more than once every {time_window} seconds...")
     # Filter for outbound packets (tcp, udp, icmp)
     sniff(filter="ip", iface=interface, prn=process_packet, store=0)
 
