@@ -4,8 +4,14 @@ import logging
 import psutil
 import socket
 import os
+import pwd
 import sys
 import subprocess
+import threading
+import time
+from collections import defaultdict
+import logging
+from logging.handlers import RotatingFileHandler
 
 # Dictionary to store protocol mappings
 protocol_mapping = {
@@ -27,18 +33,42 @@ def check_and_elevate():
 check_and_elevate()
 
 # Set up logging configuration
-logging.basicConfig(
-    filename='inbound_requests.log',  # Changed to log inbound requests
-    level=logging.INFO,
-    format='%(asctime)s - %(message)s',
-    filemode='w'  # Overwrite the log file each time ('a' to append)
+# Configure logging with RotatingFileHandler
+log_formatter = logging.Formatter('%(asctime)s - %(message)s')
+
+log_file = 'inbound_requests.log'
+
+handler = RotatingFileHandler(
+    log_file,
+    mode='a',
+    maxBytes=5 * 1024 * 1024,  # Rotate after 5 MB
+    backupCount=5,              # Keep 5 backup files
+    encoding=None,
+    delay=0
 )
+
+handler.setFormatter(log_formatter)
+handler.setLevel(logging.INFO)
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+logger.addHandler(handler)
+
 
 # Dictionary to store recently seen requests
 recent_requests = {}
 
 # Time window to filter duplicate requests (in seconds)
 time_window = 5
+
+# Threshold for packets per source IP
+PACKET_THRESHOLD = 300  # Adjust as needed
+
+# Time interval in seconds to reset counts
+TIME_INTERVAL = 20  # Adjust as needed
+
+# Packet counts per source IP
+packet_counts = defaultdict(int)
 
 def get_local_ip(interface):
     """Finds and returns the local IP address of the machine."""
@@ -71,6 +101,54 @@ def get_active_interface():
                     return interface  # Return the first active non-loopback, non-virtual interface
     return None  # Return None if no valid interface is found
 
+def drop_privileges(uid_name='nobody'):
+    if os.getuid() != 0:
+        # Already running as non-root
+        return
+    try:
+        # Get the uid/gid from the name
+        pw_record = pwd.getpwnam(uid_name)
+        uid = pw_record.pw_uid
+        gid = pw_record.pw_gid
+        # Remove group privileges
+        os.setgroups([])
+        # Try setting the new uid/gid
+        os.setgid(gid)
+        os.setuid(uid)
+        # Ensure privileges cannot be regained
+        os.umask(0o077)
+    except Exception as e:
+        logger.error(f"Failed to drop privileges: {e}")
+        sys.exit(1)
+        
+def mask_ip(ip_address):
+    if ':' in ip_address:
+        # IPv6 address masking (e.g., zero out last segments)
+        parts = ip_address.split(':')
+        if len(parts) >= 2:
+            parts[-1] = '0000'
+            parts[-2] = '0000'
+            return ':'.join(parts)
+        else:
+            return ip_address
+    else:
+        # IPv4 address masking
+        parts = ip_address.split('.')
+        if len(parts) == 4:
+            parts[-1] = '0'
+            return '.'.join(parts)
+        else:
+            return ip_address
+
+def sanitize_dns_name(dns_name):
+    if dns_name:
+        parts = dns_name.split('.')
+        if len(parts) >= 2:
+            return '.'.join(parts[-2:])  # Keep only the domain and TLD
+        else:
+            return dns_name
+    else:
+        return 'N/A'
 
 def resolve_dns(ip_address):
     try:
@@ -81,64 +159,96 @@ def resolve_dns(ip_address):
 def analyze_packet_type(packet):
     if ICMP in packet:
         icmp_type = packet[ICMP].type
-        return f"ICMP Packet: Type {icmp_type}"
+        return f"Packet Type: {icmp_type}"
     elif TCP in packet:
         tcp_flags = packet[TCP].flags
-        return f"TCP Packet: Flags {tcp_flags}"
+        return f"Packet Flags: {tcp_flags}"
     elif UDP in packet:
-        return f"UDP Packet"
+        return f"- UDP Packet"
     else:
         return "Unknown Packet Type"
 
+def detect_dos_attacks():
+    global packet_counts
+    separator = ' | '
+    while True:
+        time.sleep(TIME_INTERVAL)
+        for ip, count in packet_counts.items():
+            if count > PACKET_THRESHOLD:
+                alert_message = (
+                    
+                    f"Potential DoS attack detected{separator}"
+                    f"IP: {ip}{separator}"
+                    f"Packets: {count}{separator}"
+                    f"Interval: {TIME_INTERVAL} seconds"
+                    f"\n"
+)
+
+                print("\n",alert_message)
+                logger.warning(alert_message)
+        # Reset packet counts after each interval
+        packet_counts.clear()
+
+
 # Function to process and log inbound packets, ignoring loopback and local addresses
 def process_packet(packet):
-    if IP in packet:
-        src_ip = packet[IP].src
-        dst_ip = packet[IP].dst
+    try:
+        if IP in packet:
+            src_ip = packet[IP].src
+            dst_ip = packet[IP].dst
 
-        # Ignore loopback interface traffic (127.0.0.1 or ::1)
-        if src_ip == '127.0.0.1' or dst_ip == '127.0.0.1' or src_ip == '::1' or dst_ip == '::1':
-            return  # Skip processing packets on loopback
+            # Ignore loopback interface traffic (127.0.0.1 or ::1)
+            if src_ip == '127.0.0.1' or dst_ip == '127.0.0.1' or src_ip == '::1' or dst_ip == '::1':
+                return  # Skip processing packets on loopback
 
-        # Now checking if the destination IP is the local machine's IP (inbound traffic)
-        if packet[IP].dst == my_ip:
-            protocol_number = packet.proto
-            protocol_name = protocol_mapping.get(protocol_number, f"Unknown ({protocol_number})")
-            packet_size = len(packet)
-            timestamp = datetime.now()
+            # Now checking if the destination IP is the local machine's IP (inbound traffic)
+            if dst_ip == my_ip:
+                protocol_number = packet.proto
+                # Increment the packet count for the source IP
+                packet_counts[src_ip] += 1
+                protocol_name = protocol_mapping.get(protocol_number, f"Unknown ({protocol_number})")
+                packet_size = len(packet)
+                timestamp = datetime.now()
 
-            # Analyze the packet type
-            packet_type_details = analyze_packet_type(packet)
+                # Analyze the packet type
+                packet_type_details = analyze_packet_type(packet)
 
-            # Resolve the DNS name for the source IP (now focusing on the source since it's inbound traffic)
-            dns_name = resolve_dns(src_ip)
+                # Resolve the DNS name for the source IP (now focusing on the source since it's inbound traffic)
+                dns_name = resolve_dns(src_ip)
 
-            # Create a unique key for the packet (based on src, dst, and protocol)
-            packet_key = (src_ip, dst_ip, protocol_number)
+                # Sanitize the IP and DNS name 
+                masked_src_ip = mask_ip(src_ip)
+                sanitized_dns_name = sanitize_dns_name(dns_name)
 
-            # Check if the packet has been seen recently
-            if packet_key in recent_requests:
-                last_seen = recent_requests[packet_key]
-                # If the packet was seen within the time window, skip logging
-                if timestamp - last_seen < timedelta(seconds=time_window):
-                    return
+                # Create a unique key for the packet (based on src, dst, and protocol)
+                packet_key = (src_ip, dst_ip, protocol_number)
 
-            # Organize and structure the log message
-            log_message = (
-                f"Inbound Request - "
-                f"Source IP: {src_ip} "
-                f"DNS: {dns_name if dns_name else 'N/A'} "
-                f"Protocol: {protocol_name} "
-                f"{packet_type_details} "
-                f"Packet Size: {packet_size} bytes"
-            )
+                # Check if the packet has been seen recently
+                if packet_key in recent_requests:
+                    last_seen = recent_requests[packet_key]
+                    # If the packet was seen within the time window, skip logging
+                    if timestamp - last_seen < timedelta(seconds=time_window):
+                        return
 
-            # Log the structured message
-            logging.info(log_message)
+                # Organize and structure the log message
+                log_message = (
+                    f"Inbound Request \n"
+                    f"------------------------------------------\n"
+                    f"Source IP: {masked_src_ip} \n"
+                    f"DNS: {sanitized_dns_name}\n"
+                    f"Protocol: {protocol_name} | "
+                    f"{packet_type_details} \n"
+                    f"Packet Size: {packet_size} bytes\n"
+                )
 
-            # Update the dictionary with the latest timestamp
-            recent_requests[packet_key] = timestamp
+                # Log the structured message
+                logger.info(log_message)
 
+                # Update the dictionary with the latest timestamp
+                recent_requests[packet_key] = timestamp
+    except Exception as e:
+        logger.error(f"Packet processing error: {e}")
+            
 # Start sniffing inbound traffic
 def start_sniffing(interface):
     print(f"Starting to sniff on interface {interface}...")
@@ -151,5 +261,17 @@ if __name__ == "__main__":
     active_interface = get_active_interface()
     my_ip = get_local_ip(active_interface)
     
+    if active_interface is None:
+        print("No active interface found. Exiting.")
+        sys.exit(1)
+        
     # Start sniffing for inbound traffic on the active interface
-    start_sniffing(interface=active_interface)
+    sniffing_thread = threading.Thread(target=start_sniffing, args=(active_interface,))
+    sniffing_thread.start()
+    
+    drop_privileges(uid_name='nobody')
+    
+    # Start the DoS detection thread
+    detection_thread = threading.Thread(target=detect_dos_attacks, daemon=True)
+    detection_thread.start()
+    
