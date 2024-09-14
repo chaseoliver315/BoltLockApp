@@ -1,0 +1,512 @@
+2024-09-11 22:12:50,507 - Inbound Request - Source IP: 74.40.74.40 DNS: dns1.anycast.frontiernet.net Protocol: UDP UDP Packet Packet Size: 136 bytes
+2024-09-11 22:12:50,570 - Inbound Request - Source IP: 3.233.158.26 DNS: ec2-3-233-158-26.compute-1.amazonaws.com Protocol: TCP TCP Packet: Flags SA Packet Size: 74 bytes
+2024-09-11 22:12:57,877 - Inbound Request - Source IP: 172.64.155.209 DNS: N/A Protocol: TCP TCP Packet: Flags A Packet Size: 66 bytes
+2024-09-11 22:12:57,886 - Inbound Request - Source IP: 74.40.74.40 DNS: dns1.anycast.frontiernet.net Protocol: UDP UDP Packet Packet Size: 149 bytes
+2024-09-11 22:12:58,393 - Inbound Request - Source IP: 142.251.178.188 DNS: yucmhab-in-f188.1e100.net Protocol: TCP TCP Packet: Flags A Packet Size: 66 bytes
+2024-09-11 22:12:58,802 - Inbound Request - Source IP: 35.190.80.1 DNS: 1.80.190.35.bc.googleusercontent.com Protocol: UDP UDP Packet Packet Size: 1292 bytes
+2024-09-11 22:12:59,532 - Inbound Request - Source IP: 142.250.64.100 DNS: lga34s31-in-f4.1e100.net Protocol: UDP UDP Packet Packet Size: 1292 bytes
+2024-09-11 22:13:00,216 - Inbound Request - Source IP: 142.250.190.110 DNS: ord37s35-in-f14.1e100.net Protocol: UDP UDP Packet Packet Size: 1292 bytes
+2024-09-11 22:13:00,258 - Inbound Request - Source IP: 142.250.72.97 DNS: lga34s32-in-f1.1e100.net Protocol: UDP UDP Packet Packet Size: 1292 bytes
+2024-09-11 22:13:00,303 - Inbound Request - Source IP: 142.251.40.106 DNS: lga25s79-in-f10.1e100.net Protocol: UDP UDP Packet Packet Size: 1292 bytes
+2024-09-11 22:13:01,242 - Inbound Request - Source IP: 142.250.191.238 DNS: ord38s32-in-f14.1e100.net Protocol: UDP UDP Packet Packet Size: 1292 bytes
+2024-09-11 22:13:04,214 - Inbound Request - Source IP: 74.40.74.40 DNS: dns1.anycast.frontiernet.net Protocol: UDP UDP Packet Packet Size: 145 bytes
+2024-09-11 22:13:04,243 - Inbound Request - Source IP: 142.251.40.142 DNS: lga25s80-in-f14.1e100.net Protocol: UDP UDP Packet Packet Size: 1292 bytes
+2024-09-11 22:13:04,496 - Inbound Request - Source IP: 142.251.35.163 DNS: lga25s78-in-f3.1e100.net Protocol: TCP TCP Packet: Flags SA Packet Size: 74 bytes
+2024-09-11 22:13:04,514 - Inbound Request - Source IP: 142.251.41.3 DNS: lga34s40-in-f3.1e100.net Protocol: UDP UDP Packet Packet Size: 1292 bytes
+2024-09-11 22:13:14,625 - Inbound Request - Source IP: 13.66.138.105 DNS: N/A Protocol: TCP TCP Packet: Flags A Packet Size: 66 bytes
+2024-09-11 22:13:14,630 - Inbound Request - Source IP: 74.40.74.40 DNS: dns1.anycast.frontiernet.net Protocol: UDP UDP Packet Packet Size: 160 bytes
+2024-09-11 22:13:19,222 - Inbound Request - Source IP: 13.89.179.9 DNS: N/A Protocol: TCP TCP Packet: Flags A Packet Size: 66 bytes
+2024-09-14 13:25:56,813 - Inbound Request
+Source IP: 23.56.162.0
+DNS: akamaitechnologies.com
+Protocol: TCP
+TCP Packet: Flags PA
+Packet Size: 90 bytes
+
+
+2024-09-14 13:25:56,837 - Inbound Request
+Source IP: 74.40.74.0
+DNS: frontiernet.net
+Protocol: UDP
+UDP Packet
+Packet Size: 151 bytes
+
+
+2024-09-14 13:25:57,805 - Inbound Request
+Source IP: 13.66.138.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags PA
+Packet Size: 399 bytes
+
+
+2024-09-14 13:25:59,826 - Inbound Request
+Source IP: 20.189.173.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:26:02,550 - Inbound Request
+Source IP: 15.197.213.0
+DNS: awsglobalaccelerator.com
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:26:02,553 - Inbound Request
+Source IP: 74.40.74.0
+DNS: frontiernet.net
+Protocol: UDP
+UDP Packet
+Packet Size: 143 bytes
+
+
+2024-09-14 13:26:06,347 - Inbound Request
+Source IP: 142.250.123.0
+DNS: 1e100.net
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:26:07,824 - Inbound Request
+Source IP: 132.145.172.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags PA
+Packet Size: 94 bytes
+
+
+2024-09-14 13:26:07,828 - Inbound Request
+Source IP: 74.40.74.0
+DNS: frontiernet.net
+Protocol: UDP
+UDP Packet
+Packet Size: 167 bytes
+
+
+2024-09-14 13:26:27,805 - Inbound Request
+Source IP: 132.145.172.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags PA
+Packet Size: 94 bytes
+
+
+2024-09-14 13:26:32,545 - Inbound Request
+Source IP: 104.18.32.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:26:32,549 - Inbound Request
+Source IP: 74.40.74.0
+DNS: frontiernet.net
+Protocol: UDP
+UDP Packet
+Packet Size: 147 bytes
+
+
+2024-09-14 13:26:33,451 - Inbound Request
+Source IP: 172.64.155.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:26:42,858 - Inbound Request
+Source IP: 13.66.138.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:26:44,977 - Inbound Request
+Source IP: 74.40.74.0
+DNS: frontiernet.net
+Protocol: UDP
+UDP Packet
+Packet Size: 86 bytes
+
+
+2024-09-14 13:26:45,009 - Inbound Request
+Source IP: 140.82.114.0
+DNS: github.com
+Protocol: TCP
+TCP Packet: Flags SA
+Packet Size: 74 bytes
+
+
+2024-09-14 13:26:47,535 - Inbound Request
+Source IP: 15.197.213.0
+DNS: awsglobalaccelerator.com
+Protocol: TCP
+TCP Packet: Flags PA
+Packet Size: 106 bytes
+
+
+2024-09-14 13:26:47,767 - Inbound Request
+Source IP: 20.189.173.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:26:47,803 - Inbound Request
+Source IP: 132.145.172.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags PA
+Packet Size: 94 bytes
+
+
+2024-09-14 13:26:51,362 - Inbound Request
+Source IP: 142.250.123.0
+DNS: 1e100.net
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:26:52,552 - Inbound Request
+Source IP: 17.253.27.0
+DNS: aaplimg.com
+Protocol: TCP
+TCP Packet: Flags PA
+Packet Size: 90 bytes
+
+
+2024-09-14 13:26:52,566 - Inbound Request
+Source IP: 74.40.74.0
+DNS: frontiernet.net
+Protocol: UDP
+UDP Packet
+Packet Size: 131 bytes
+
+
+2024-09-14 13:27:07,811 - Inbound Request
+Source IP: 132.145.172.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags PA
+Packet Size: 94 bytes
+
+
+2024-09-14 13:27:13,262 - Inbound Request
+Source IP: 74.40.74.0
+DNS: frontiernet.net
+Protocol: UDP
+UDP Packet
+Packet Size: 165 bytes
+
+
+2024-09-14 13:27:13,358 - Inbound Request
+Source IP: 17.248.192.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags SA
+Packet Size: 74 bytes
+
+
+2024-09-14 13:27:16,711 - Inbound Request
+Source IP: 20.189.173.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags SA
+Packet Size: 74 bytes
+
+
+2024-09-14 13:27:16,896 - Inbound Request
+Source IP: 20.189.173.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:27:17,625 - Inbound Request
+Source IP: 104.18.32.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:27:18,735 - Inbound Request
+Source IP: 172.64.155.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:27:20,298 - Potential DoS attack detected
+IP: 17.248.192.0
+Packets: 224
+Interval: 10 seconds
+
+
+2024-09-14 13:27:21,766 - Inbound Request
+Source IP: 20.189.173.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags SA
+Packet Size: 74 bytes
+
+
+2024-09-14 13:27:21,921 - Inbound Request
+Source IP: 20.189.173.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:27:27,832 - Inbound Request
+Source IP: 132.145.172.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags PA
+Packet Size: 94 bytes
+
+
+2024-09-14 13:27:27,837 - Inbound Request
+Source IP: 74.40.74.0
+DNS: frontiernet.net
+Protocol: UDP
+UDP Packet
+Packet Size: 167 bytes
+
+
+2024-09-14 13:27:27,984 - Inbound Request
+Source IP: 13.66.138.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:27:32,566 - Inbound Request
+Source IP: 15.197.213.0
+DNS: awsglobalaccelerator.com
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:27:33,090 - Inbound Request
+Source IP: 20.189.173.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:27:33,435 - Inbound Request
+Source IP: 74.40.74.0
+DNS: frontiernet.net
+Protocol: UDP
+UDP Packet
+Packet Size: 118 bytes
+
+
+2024-09-14 13:27:33,518 - Inbound Request
+Source IP: 20.189.173.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags SA
+Packet Size: 74 bytes
+
+
+2024-09-14 13:27:36,420 - Inbound Request
+Source IP: 142.250.123.0
+DNS: 1e100.net
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:27:43,762 - Inbound Request
+Source IP: 20.189.173.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:27:43,794 - Inbound Request
+Source IP: 20.189.173.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags SA
+Packet Size: 74 bytes
+
+
+2024-09-14 13:27:47,806 - Inbound Request
+Source IP: 132.145.172.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags PA
+Packet Size: 94 bytes
+
+
+2024-09-14 13:27:49,140 - Inbound Request
+Source IP: 74.40.74.0
+DNS: frontiernet.net
+Protocol: UDP
+UDP Packet
+Packet Size: 118 bytes
+
+
+2024-09-14 13:27:49,222 - Inbound Request
+Source IP: 20.189.173.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags SA
+Packet Size: 74 bytes
+
+
+2024-09-14 13:27:49,288 - Inbound Request
+Source IP: 20.189.173.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:27:54,646 - Inbound Request
+Source IP: 20.189.173.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags SA
+Packet Size: 74 bytes
+
+
+2024-09-14 13:27:54,728 - Inbound Request
+Source IP: 20.189.173.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:28:02,652 - Inbound Request
+Source IP: 104.18.32.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:28:02,656 - Inbound Request
+Source IP: 74.40.74.0
+DNS: frontiernet.net
+Protocol: UDP
+UDP Packet
+Packet Size: 147 bytes
+
+
+2024-09-14 13:28:03,765 - Inbound Request
+Source IP: 172.64.155.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:28:07,808 - Inbound Request
+Source IP: 132.145.172.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags PA
+Packet Size: 94 bytes
+
+
+2024-09-14 13:28:08,724 - Inbound Request
+Source IP: 13.66.138.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags FA
+Packet Size: 66 bytes
+
+
+2024-09-14 13:28:27,809 - Inbound Request
+Source IP: 132.145.172.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags PA
+Packet Size: 94 bytes
+
+
+2024-09-14 13:29:44,887 - Inbound Request
+Source IP: 132.145.172.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags PA
+Packet Size: 126 bytes
+
+
+2024-09-14 13:29:44,891 - Inbound Request
+Source IP: 74.40.74.0
+DNS: frontiernet.net
+Protocol: UDP
+UDP Packet
+Packet Size: 167 bytes
+
+
+2024-09-14 13:29:47,540 - Inbound Request
+Source IP: 15.197.213.0
+DNS: awsglobalaccelerator.com
+Protocol: TCP
+TCP Packet: Flags PA
+Packet Size: 106 bytes
+
+
+2024-09-14 13:29:48,096 - Inbound Request
+Source IP: 140.82.114.0
+DNS: github.com
+Protocol: TCP
+TCP Packet: Flags SA
+Packet Size: 74 bytes
+
+
+2024-09-14 13:29:51,070 - Inbound Request
+Source IP: 13.66.138.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags PA
+Packet Size: 399 bytes
+
+
+2024-09-14 13:29:51,075 - Inbound Request
+Source IP: 74.40.74.0
+DNS: frontiernet.net
+Protocol: UDP
+UDP Packet
+Packet Size: 160 bytes
+
+
+2024-09-14 13:29:51,549 - Inbound Request
+Source IP: 142.250.123.0
+DNS: 1e100.net
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
+2024-09-14 13:29:51,892 - Inbound Request
+Source IP: 20.189.173.0
+DNS: N/A
+Protocol: TCP
+TCP Packet: Flags A
+Packet Size: 66 bytes
+
+
