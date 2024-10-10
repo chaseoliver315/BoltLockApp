@@ -6,8 +6,8 @@ from network_utils import get_active_interface, get_local_ip
 import packet_processor
 from dos_detector import detect_dos_attacks
 from log_setup import setup_logging
-from prometheus_client import start_http_server
 from monitoring import update_metrics  # New module for Prometheus metrics
+from prometheus_server import start_http_server as start_prometheus_http_server, open_prometheus_ui
 
 packet_counts_lock = threading.Lock()
 
@@ -33,8 +33,7 @@ if __name__ == "__main__":
     detection_thread.start()
 
     # Start the Prometheus metrics server
-    start_http_server(8000)
-    metrics_thread = threading.Thread(target=update_metrics, args=(packet_processor.packet_counts,))
+    metrics_thread = threading.Thread(target=start_prometheus_http_server, args=(8000,))
     metrics_thread.daemon = True
     metrics_thread.start()
 
@@ -50,6 +49,8 @@ if __name__ == "__main__":
 
     # Drop privileges after initializing sniffing
     drop_privileges(uid_name='dos_detector_user')
+    
+    open_prometheus_ui('http://localhost:8000')
 
     # Wait for threads to complete
     sniff_thread.join()
